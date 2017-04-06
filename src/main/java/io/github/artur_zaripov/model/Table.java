@@ -6,16 +6,14 @@ import java.util.List;
  * Class for table data storage
  */
 public class Table {
-    private int columnsAmount;
     private List<String[]> rows;
 
-    public Table(int columnsAmount, List<String[]> rows) {
-        this.columnsAmount = columnsAmount;
+    public Table(List<String[]> rows) {
         this.rows = rows;
     }
 
     public int getColumnsAmount() {
-        return columnsAmount;
+        return rows.size() == 0 ? 0 : rows.get(0).length;
     }
 
     public int getRowsAmount() {
@@ -29,7 +27,7 @@ public class Table {
 
     public String getCellValue(int rowNumber, int columnNumber) {
         validateNumber(rowNumber, rows.size(), "row");
-        validateNumber(columnNumber, columnsAmount, "column");
+        validateNumber(columnNumber, getColumnsAmount(), "column");
 
         try {
             return rows.get(rowNumber)[columnNumber];
