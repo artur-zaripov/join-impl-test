@@ -16,7 +16,17 @@ public abstract class SafeJoin implements Join {
     }
 
     public String[] mergeRows(String[] rowA, String[] rowB, int ignoredColumnInB) {
-        return new String[]{};
+        String[] result = new String[rowA.length + rowB.length - 1];
+
+        int i = rowA.length;
+        System.arraycopy(rowA, 0, result, 0, rowA.length);
+        for (int j = 0; j < rowB.length; j++)
+            if (j != ignoredColumnInB) {
+                result[i] = rowB[j];
+                i++;
+            }
+
+        return result;
     }
 
     private void validateNumber(int number, int maxValue, String name) {
