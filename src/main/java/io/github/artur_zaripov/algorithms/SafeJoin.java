@@ -3,7 +3,7 @@ package io.github.artur_zaripov.algorithms;
 import io.github.artur_zaripov.model.Table;
 
 /**
- * Class
+ * Proxy class for join input parameters check
  */
 public abstract class SafeJoin implements Join {
 
