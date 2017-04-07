@@ -23,7 +23,7 @@ public class SortMergeJoin extends SafeJoin {
             if (row1[tableAColumn].equals(row2[tableBColumn])) {
                 data.add(mergeRows(row1, row2, tableBColumn));
                 j++;
-            } else if (row1[0].compareTo(row2[0]) < 0) {
+            } else if (row1[tableAColumn].compareTo(row2[tableBColumn]) < 0) {
                 i++;
             } else {
                 j++;
