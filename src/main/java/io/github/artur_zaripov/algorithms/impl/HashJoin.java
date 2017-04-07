@@ -12,7 +12,7 @@ public class HashJoin extends SafeJoin {
 
     @Override
     public Table execute(Table tableA, int tableAColumn, Table tableB, int tableBColumn) {
-        Map<String, Integer> index = new HashMap<>();
+        Map<String, List<Integer>> index = new HashMap<>();
 
         if (tableA.getRowsAmount() > tableB.getRowsAmount()) {
             fillIndex(index, tableB, tableBColumn);
@@ -23,19 +23,30 @@ public class HashJoin extends SafeJoin {
         }
     }
 
-    private void fillIndex(Map<String, Integer> index, Table table, int column) {
-        for (int i = 0; i < table.getRowsAmount(); i++)
-            index.put(table.getCellValue(i, column), i);
+    private void fillIndex(Map<String, List<Integer>> index, Table table, int column) {
+        for (int i = 0; i < table.getRowsAmount(); i++) {
+            String value = table.getCellValue(i, column);
+            List<Integer> rowNumbers = index.get(value);
+            if (rowNumbers == null) {
+                rowNumbers = new ArrayList<>();
+                rowNumbers.add(i);
+                index.put(value, rowNumbers);
+            } else {
+                rowNumbers.add(i);
+            }
+        }
     }
 
-    private List<String[]> getData(Table table, int columnInTable, Map<String, Integer> index, Table indexedTable) {
+    private List<String[]> getData(Table table, int columnInTable, Map<String, List<Integer>> index, Table indexedTable) {
         List<String[]> data = new ArrayList<>();
 
         table.getRowsStream().forEach(row1 -> {
-            Integer i = index.get(row1[columnInTable]);
-            if (i != null) {
-                String[] row2 = indexedTable.getRow(i);
-                data.add(mergeRows(row2, row1, columnInTable));
+            List<Integer> rowNumbers = index.get(row1[columnInTable]);
+            if (rowNumbers != null) {
+                for (Integer i : rowNumbers) {
+                    String[] row2 = indexedTable.getRow(i);
+                    data.add(mergeRows(row2, row1, columnInTable));
+                }
             }
         });
 
