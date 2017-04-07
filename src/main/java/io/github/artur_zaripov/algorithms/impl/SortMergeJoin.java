@@ -21,7 +21,14 @@ public class SortMergeJoin extends SafeJoin {
             String[] row2 = tableB.getRow(j);
 
             if (row1[tableAColumn].equals(row2[tableBColumn])) {
-                data.add(mergeRows(row1, row2, tableBColumn));
+                int k = i;
+                while (row1[tableAColumn].equals(row2[tableBColumn])) {
+                    data.add(mergeRows(row1, row2, tableBColumn));
+                    if (++k < tableA.getRowsAmount())
+                        row1 = tableA.getRow(k);
+                    else
+                        break;
+                }
                 j++;
             } else if (row1[tableAColumn].compareTo(row2[tableBColumn]) < 0) {
                 i++;
