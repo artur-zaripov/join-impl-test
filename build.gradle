@@ -16,6 +16,7 @@ repositories {
 dependencies {
     compile 'com.google.guava:guava:21.0'
     compile 'org.openjdk.jmh:jmh-core:0.9'
+    testCompile 'junit:junit:4.12'
 }
 
 jmh {
@@ -31,5 +32,13 @@ buildscript {
     }
     dependencies {
         classpath "me.champeau.gradle:jmh-gradle-plugin:0.3.1"
+    }
+}
+
+sourceSets {
+    test {
+        java {
+            srcDirs = ["src/test"]
+        }
     }
 }
