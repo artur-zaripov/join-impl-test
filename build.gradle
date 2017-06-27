@@ -1,0 +1,44 @@
+group 'io.github.artur_zaripov'
+version '0.1'
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: "me.champeau.gradle.jmh"
+
+mainClassName = 'io.github.artur_zaripov.Main'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.google.guava:guava:21.0'
+    compile 'org.openjdk.jmh:jmh-core:0.9'
+    testCompile 'junit:junit:4.12'
+}
+
+jmh {
+    fork = 0
+}
+
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "me.champeau.gradle:jmh-gradle-plugin:0.3.1"
+    }
+}
+
+sourceSets {
+    test {
+        java {
+            srcDirs = ["src/test"]
+        }
+    }
+}
